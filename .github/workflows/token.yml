@@ -13,11 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo -n $ACTIONS_ID_TOKEN_REQUEST_TOKEN | base64 | xxd -p
-      - run: |
-          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
-          echo "ACTIONS_ID_TOKEN_REQUEST_URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
           curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=demo"
           OIDC_TOKEN="$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=demo" | jq -r .value)"
-          echo "OIDC_TOKEN: $OIDC_TOKEN"
+          echo -n $OIDC_TOKEN | base64 | xxd -p
           # curl -H "Authorization: Bearer $OIDC_TOKEN" https://my-service.example.com/deploy
